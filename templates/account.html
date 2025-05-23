@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+
+{% block title %}حسابي - متجر البلايز المميزة{% endblock %}
+
+{% block content %}
+<section class="account-page py-5">
+    <div class="container">
+        <div class="section-heading mb-4">
+            <h1 class="fw-bold">حسابي</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">حسابي</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">لوحة التحكم</h5>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <a href="#profile" class="list-group-item list-group-item-action active" data-bs-toggle="list">البيانات الشخصية</a>
+                        <a href="#orders" class="list-group-item list-group-item-action" data-bs-toggle="list">طلباتي</a>
+                        <a href="#addresses" class="list-group-item list-group-item-action" data-bs-toggle="list">العناوين</a>
+                        <a href="#designs" class="list-group-item list-group-item-action" data-bs-toggle="list">تصاميمي</a>
+                        <a href="#change-password" class="list-group-item list-group-item-action" data-bs-toggle="list">تغيير كلمة المرور</a>
+                        <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action text-danger">تسجيل الخروج</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Content -->
+            <div class="col-lg-9">
+                <div class="tab-content">
+                    <!-- Profile Section -->
+                    <div class="tab-pane fade show active" id="profile">
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">البيانات الشخصية</h5>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="name" class="form-label">الاسم الكامل</label>
+                                            <input type="text" class="form-control" id="name" value="{{ user.name }}">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label">البريد الإلكتروني</label>
+                                            <input type="email" class="form-control" id="email" value="{{ user.email }}" readonly>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="phone" class="form-label">رقم الهاتف</label>
+                                            <input type="tel" class="form-control" id="phone" value="{{ user.phone or '' }}">
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="address" class="form-label">العنوان</label>
+                                            <textarea class="form-control" id="address" rows="3">{{ user.address or '' }}</textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Orders Section -->
+                    <div class="tab-pane fade" id="orders">
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">طلباتي</h5>
+                            </div>
+                            <div class="card-body">
+                                {% if orders %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>رقم الطلب</th>
+                                                <th>التاريخ</th>
+                                                <th>المبلغ</th>
+                                                <th>حالة الطلب</th>
+                                                <th>حالة الدفع</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for order in orders %}
+                                            <tr>
+                                                <td>{{ order.order_number }}</td>
+                                                <td>{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+                                                <td>{{ order.total_amount }} ج.م</td>
+                                                <td>
+                                                    {% if order.order_status == 'pending' %}
+                                                        <span class="badge bg-warning">قيد المعالجة</span>
+                                                    {% elif order.order_status == 'shipped' %}
+                                                        <span class="badge bg-info">تم الشحن</span>
+                                                    {% elif order.order_status == 'delivered' %}
+                                                        <span class="badge bg-success">تم التسليم</span>
+                                                    {% elif order.order_status == 'cancelled' %}
+                                                        <span class="badge bg-danger">ملغي</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if order.payment_status == 'pending' %}
+                                                        <span class="badge bg-warning">قيد الانتظار</span>
+                                                    {% elif order.payment_status == 'paid' %}
+                                                        <span class="badge bg-success">مدفوع</span>
+                                                    {% elif order.payment_status == 'cancelled' %}
+                                                        <span class="badge bg-danger">ملغي</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-outline-primary view-order" 
+                                                            data-order-id="{{ order.id }}" data-bs-toggle="modal" data-bs-target="#orderModal">
+                                                        عرض التفاصيل
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
+                                    <h4>لا توجد طلبات بعد</h4>
+                                    <p>استكشف منتجاتنا وقم بطلبك الأول</p>
+                                    <a href="{{ url_for('products') }}" class="btn btn-primary">تسوق الآن</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Addresses Section -->
+                    <div class="tab-pane fade" id="addresses">
+                        <div class="card">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">العناوين</h5>
+                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                                    <i class="fas fa-plus me-1"></i> إضافة عنوان جديد
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title">العنوان الرئيسي</h6>
+                                                <p class="card-text">{{ user.address or 'لا يوجد عنوان مضاف' }}</p>
+                                                {% if user.address %}
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary">تعديل</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger">حذف</button>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Designs Section -->
+                    <div class="tab-pane fade" id="designs">
+                        <div class="card">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">تصاميمي</h5>
+                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addDesignModal">
+                                    <i class="fas fa-plus me-1"></i> إضافة تصميم جديد
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-center py-4">
+                                        <i class="fas fa-palette fa-3x text-muted mb-3"></i>
+                                        <h4>لا توجد تصاميم بعد</h4>
+                                        <p>قم بإضافة تصاميمك الخاصة واستخدمها في طلباتك</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Change Password Section -->
+                    <div class="tab-pane fade" id="change-password">
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">تغيير كلمة المرور</h5>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="current_password" class="form-label">كلمة المرور الحالية</label>
+                                        <input type="password" class="form-control" id="current_password" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="new_password" class="form-label">كلمة المرور الجديدة</label>
+                                        <input type="password" class="form-control" id="new_password" required>
+                                        <div class="form-text">يجب أن تحتوي على 8 أحرف على الأقل</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirm_new_password" class="form-label">تأكيد كلمة المرور الجديدة</label>
+                                        <input type="password" class="form-control" id="confirm_new_password" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">تغيير كلمة المرور</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Order Details Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تفاصيل الطلب</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="orderDetails">
+                    <!-- Order details will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Address Modal -->
+<div class="modal fade" id="addAddressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة عنوان جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="address_title" class="form-label">عنوان التسمية</label>
+                        <input type="text" class="form-control" id="address_title" placeholder="المنزل، العمل، إلخ...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="address_details" class="form-label">تفاصيل العنوان</label>
+                        <textarea class="form-control" id="address_details" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address_phone" class="form-label">رقم الهاتف</label>
+                        <input type="tel" class="form-control" id="address_phone">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">حفظ العنوان</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Design Modal -->
+<div class="modal fade" id="addDesignModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة تصميم جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="design_name" class="form-label">اسم التصميم</label>
+                        <input type="text" class="form-control" id="design_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="design_image" class="form-label">صورة التصميم</label>
+                        <input type="file" class="form-control" id="design_image" accept="image/*" required>
+                        <div class="form-text">الملفات المسموحة: PNG, JPG, GIF, SVG (الحد الأقصى: 5MB)</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="design_description" class="form-label">وصف التصميم (اختياري)</label>
+                        <textarea class="form-control" id="design_description" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">حفظ التصميم</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle tab activation on page load if URL has hash
+        if (window.location.hash) {
+            const tab = document.querySelector(`a[href="${window.location.hash}"]`);
+            if (tab) {
+                tab.click();
+            }
+        }
+        
+        // Order details modal
+        const viewOrderButtons = document.querySelectorAll('.view-order');
+        viewOrderButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const orderId = this.getAttribute('data-order-id');
+                // Here you would load order details from the server
+                // For now, we'll add some placeholder content
+                document.getElementById('orderDetails').innerHTML = `
+                    <div class="text-center">
+                        <p>جاري تحميل تفاصيل الطلب رقم ${orderId}...</p>
+                    </div>
+                `;
+            });
+        });
+    });
+</script>
+{% endblock %}

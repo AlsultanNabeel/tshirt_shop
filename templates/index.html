@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block title %}الرئيسية - متجر البلايز المميزة{% endblock %}
+
+{% block content %}
+<!-- Hero Banner -->
+<section class="hero-banner">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">بلايز بتصاميم فريدة ومميزة</h1>
+                <p class="lead">اختر من بين مجموعة متنوعة من التصاميم أو قم بتحميل تصميمك الخاص. جودة عالية وأسعار منافسة.</p>
+                <div class="mt-4">
+                    <a href="{{ url_for('products') }}" class="btn btn-primary btn-lg me-2">تسوق الآن</a>
+                    <a href="{{ url_for('about') }}" class="btn btn-outline-dark btn-lg">تعرف علينا</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/hero-image.jpg') }}" alt="Hero Image" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features py-5 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="feature-box p-4 bg-white rounded shadow-sm">
+                    <i class="fas fa-tshirt fa-3x text-primary mb-3"></i>
+                    <h3>جودة عالية</h3>
+                    <p>نستخدم أفضل أنواع الأقمشة لضمان الراحة والمتانة</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-box p-4 bg-white rounded shadow-sm">
+                    <i class="fas fa-palette fa-3x text-primary mb-3"></i>
+                    <h3>تصاميم مميزة</h3>
+                    <p>اختر من بين مجموعة متنوعة من التصاميم أو قم بتحميل تصميمك الخاص</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-box p-4 bg-white rounded shadow-sm">
+                    <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
+                    <h3>شحن سريع</h3>
+                    <p>شحن سريع لجميع أنحاء مصر وخدمة الدفع عند الاستلام</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="featured-products py-5">
+    <div class="container">
+        <div class="section-heading text-center mb-5">
+            <h2 class="fw-bold">منتجات مميزة</h2>
+            <p>اكتشف أحدث التصاميم المميزة في متجرنا</p>
+        </div>
+        
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-3 mb-4">
+                <div class="product-card card h-100">
+                    <img src="{{ url_for('static', filename=product.image_path or 'images/placeholder.jpg') }}" 
+                         class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text text-truncate">{{ product.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="price fw-bold">{{ product.price }} جنيه</span>
+                            <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-sm btn-outline-primary">عرض التفاصيل</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('products') }}" class="btn btn-primary">عرض جميع المنتجات</a>
+        </div>
+    </div>
+</section>
+
+
+<!-- Testimonials -->
+<section class="testimonials py-5">
+    <div class="container">
+        <div class="section-heading text-center mb-5">
+            <h2 class="fw-bold">آراء العملاء</h2>
+            <p>ماذا يقول عملاؤنا عنا</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card card h-100 p-4">
+                    <div class="d-flex mb-3">
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="card-text">"جودة ممتازة وتصميم رائع. سعيد جدًا بتجربة الشراء من هذا المتجر."</p>
+                    <div class="d-flex mt-3">
+                        <div class="testimonial-avatar">
+                            <img src="{{ url_for('static', filename='images/avatar-1.jpg') }}" class="rounded-circle" width="50" height="50" alt="Avatar">
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0">أحمد محمد</h6>
+                            <small class="text-muted">القاهرة</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card card h-100 p-4">
+                    <div class="d-flex mb-3">
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="card-text">"الخامة ممتازة والمقاسات مظبوطة. التوصيل كان سريع وتعامل راقي."</p>
+                    <div class="d-flex mt-3">
+                        <div class="testimonial-avatar">
+                            <img src="{{ url_for('static', filename='images/avatar-2.jpg') }}" class="rounded-circle" width="50" height="50" alt="Avatar">
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0">سارة علي</h6>
+                            <small class="text-muted">الإسكندرية</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card card h-100 p-4">
+                    <div class="d-flex mb-3">
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="card-text">"أحببت فكرة تحميل تصميمي الخاص. النتيجة كانت رائعة ومطابقة تماماً لتوقعاتي."</p>
+                    <div class="d-flex mt-3">
+                        <div class="testimonial-avatar">
+                            <img src="{{ url_for('static', filename='images/avatar-3.jpg') }}" class="rounded-circle" width="50" height="50" alt="Avatar">
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0">محمد خالد</h6>
+                            <small class="text-muted">المنصورة</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="newsletter py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <h3>اشترك في نشرتنا البريدية</h3>
+                <p class="mb-0">احصل على آخر العروض والتخفيضات مباشرة إلى بريدك الإلكتروني</p>
+            </div>
+            <div class="col-md-6">
+                <form class="newsletter-form d-flex">
+                    <input type="email" class="form-control me-2" placeholder="بريدك الإلكتروني" required>
+                    <button type="submit" class="btn btn-light">اشترك</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

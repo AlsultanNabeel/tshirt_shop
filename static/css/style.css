@@ -1,0 +1,300 @@
+/* ملف الأنماط الرئيسي لمتجر البلايز المميزة */
+
+/* أنماط عامة */
+:root {
+    --primary-color: #0d6efd;
+    --primary-dark: #0a58ca;
+    --secondary-color: #6c757d;
+    --white: #ffffff;
+    --light-gray: #f8f9fa;
+    --dark-gray: #343a40;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+}
+
+body {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* تخصيص زر الرجوع للأعلى */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    z-index: 9999;
+}
+
+.back-to-top.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: var(--primary-dark);
+    color: var(--white);
+}
+
+/* تخصيص شريط التنقل */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand img {
+    transition: transform 0.3s;
+}
+
+.navbar-brand:hover img {
+    transform: scale(1.05);
+}
+
+.navbar .nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s;
+}
+
+.navbar .nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* تخصيص البطاقات */
+.card {
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* أنماط المنتجات */
+.product-card .card-img-top {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.product-card:hover .card-img-top {
+    transform: scale(1.03);
+}
+
+.product-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.product-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* أنماط سلة التسوق */
+.cart-item {
+    transition: background-color 0.3s;
+}
+
+.cart-item:hover {
+    background-color: var(--light-gray);
+}
+
+.cart-summary {
+    position: sticky;
+    top: 2rem;
+}
+
+/* أنماط الملف الشخصي */
+.profile-sidebar {
+    position: sticky;
+    top: 2rem;
+}
+
+/* أنماط التصميم المخصص */
+.design-section {
+    background-color: var(--light-gray);
+    padding: 3rem 0;
+    margin: 2rem 0;
+}
+
+.design-preview {
+    max-width: 300px;
+    border: 2px dashed var(--primary-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0 auto;
+}
+
+/* أنماط عملية الدفع */
+.payment-method-card {
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.payment-method-card.active {
+    border-color: var(--primary-color);
+    background-color: var(--light-gray);
+}
+
+/* أنماط القدم */
+footer {
+    background-color: var(--dark-gray);
+    color: var(--white);
+    padding: 4rem 0 2rem;
+}
+
+footer a {
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+footer .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+
+footer .social-icon:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-3px);
+}
+
+/* تحسينات متنوعة */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.section-title {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+}
+
+.section-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+/* تسجيل الدخول وإنشاء حساب */
+.auth-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* صفحة من نحن */
+.about-img {
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.team-member {
+    text-align: center;
+}
+
+.team-member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 5px solid var(--white);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* تنسيقات هاتفية */
+@media (max-width: 767.98px) {
+    .hero-section {
+        padding: 50px 0;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .product-card {
+        margin-bottom: 20px;
+    }
+    
+    .cart-summary {
+        position: static;
+        margin-top: 30px;
+    }
+    
+    .profile-sidebar {
+        position: static;
+        margin-bottom: 30px;
+    }
+}
+/* أنماط اختيار اللون */
+.color-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.color-circle.active {
+    border-color: #000;
+    transform: scale(1.1);
+}
+
+.color-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}

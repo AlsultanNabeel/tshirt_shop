@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}إنشاء حساب جديد - متجر البلايز المميزة{% endblock %}
+
+{% block content %}
+<section class="register-page py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-white text-center py-3">
+                        <h1 class="h4 mb-0">إنشاء حساب جديد</h1>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="POST" action="{{ url_for('register') }}">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">الاسم الكامل *</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">البريد الإلكتروني *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="password" class="form-label">كلمة المرور *</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="password-confirm" class="form-label">تأكيد كلمة المرور *</label>
+                                    <input type="password" class="form-control" id="password-confirm" name="password_confirm" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">رقم الهاتف</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone">
+                                </div>
+                                <div class="col-12">
+                                    <label for="address" class="form-label">العنوان</label>
+                                    <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                                        <label class="form-check-label" for="terms">
+                                            أوافق على <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">الشروط والأحكام</a>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary">إنشاء حساب</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <div class="text-center mt-4">
+                            <p>لديك حساب بالفعل؟ <a href="{{ url_for('login') }}">تسجيل الدخول</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Terms Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">الشروط والأحكام</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>1. شروط الاستخدام</h5>
+                <p>مرحبًا بك في متجر البلايز المميزة. باستخدامك لموقعنا، فإنك توافق على الالتزام بهذه الشروط والأحكام.</p>
+                
+                <h5>2. حسابات المستخدمين</h5>
+                <p>عند إنشاء حساب على موقعنا، يجب عليك تقديم معلومات دقيقة وكاملة. أنت مسؤول عن الحفاظ على سرية كلمة المرور الخاصة بك.</p>
+                
+                <h5>3. السياسات والمدفوعات</h5>
+                <p>جميع المدفوعات آمنة ومشفرة. نحن نقبل الدفع عند الاستلام وفودافون كاش. تخضع جميع المبيعات لسياسة الاسترجاع والاستبدال الخاصة بنا.</p>
+                
+                <h5>4. سياسة الخصوصية</h5>
+                <p>نحن نأخذ خصوصيتك على محمل الجد. تتم معالجة معلوماتك الشخصية وفقًا لسياسة الخصوصية الخاصة بنا.</p>
+                
+                <h5>5. حقوق الملكية الفكرية</h5>
+                <p>جميع المحتويات على الموقع، بما في ذلك الصور والنصوص والتصميمات، مملوكة لمتجر البلايز المميزة وتخضع لحقوق الملكية الفكرية.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">موافق</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

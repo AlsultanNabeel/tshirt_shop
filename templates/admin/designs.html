@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}إضافة تصميم جديد - متجر البلايز المميزة{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-sidebar {
+        min-height: calc(100vh - 300px);
+    }
+    
+    .admin-sidebar .nav-link {
+        color: #333;
+        border-radius: 0;
+        padding: 0.75rem 1rem;
+    }
+    
+    .admin-sidebar .nav-link:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+    }
+    
+    .admin-sidebar .nav-link.active {
+        background-color: #0d6efd;
+        color: white;
+    }
+    
+    .image-preview {
+        width: 100%;
+        height: 300px;
+        border: 1px dashed #ccc;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        overflow: hidden;
+    }
+    
+    .image-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="admin-add-design py-5">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Admin Sidebar -->
+            <div class="col-lg-3 col-xl-2">
+                <div class="card admin-sidebar">
+                    <div class="card-body p-0">
+                        <div class="p-3 bg-primary text-white">
+                            <h5 class="mb-0">لوحة التحكم</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="{{ url_for('admin_dashboard') }}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-tachometer-alt me-2"></i> الرئيسية
+                            </a>
+                            <a href="{{ url_for('admin_products') }}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-tshirt me-2"></i> المنتجات
+                            </a>
+                            <a href="{{ url_for('admin_designs') }}" class="list-group-item list-group-item-action active">
+                                <i class="fas fa-palette me-2"></i> التصاميم
+                            </a>
+                            <a href="{{ url_for('admin_orders') }}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-shopping-basket me-2"></i> الطلبات
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-users me-2"></i> المستخدمين
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-cog me-2"></i> الإعدادات
+                            </a>
+                            <a href="{{ url_for('index') }}" class="list-group-item list-group-item-action text-danger">
+                                <i class="fas fa-sign-out-alt me-2"></i> العودة للمتجر
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9 col-xl-10">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="h4 mb-0">إضافة تصميم جديد</h2>
+                            <a href="{{ url_for('admin_designs') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-right me-1"></i> العودة للتصاميم
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add Design Form -->
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">بيانات التصميم</h5>
+                            </div>
+                            <div class="card-body">
+                                <form action="{{ url_for('admin_add_design') }}" method="POST" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">اسم التصميم *</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">وصف التصميم</label>
+                                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="image" class="form-label">ملف التصميم *</label>
+                                        <div class="image-preview mb-3" id="imagePreview">
+                                            <div class="text-center text-muted">
+                                                <i class="fas fa-image fa-3x mb-2"></i>
+                                                <p>معاينة التصميم</p>
+                                            </div>
+                                        </div>
+                                        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                                        <div class="form-text">الملفات المسموحة: PNG, JPG, GIF, SVG. يفضل ملفات بخلفية شفافة.</div>
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-1"></i> حفظ التصميم
+                                        </button>
+                                        <button type="reset" class="btn btn-outline-secondary">
+                                            <i class="fas fa-times me-1"></i> إعادة تعيين
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageInput = document.getElementById('image');
+        const imagePreview = document.getElementById('imagePreview');
+        
+        imageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.innerHTML = `<img src="${e.target.result}" alt="Design Preview">`;
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+</script>
+{% endblock %}

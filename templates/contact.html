@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block title %}اتصل بنا - متجر البلايز المميزة{% endblock %}
+
+{% block content %}
+<section class="contact-page py-5">
+    <div class="container">
+        <div class="section-heading text-center mb-5">
+            <h1 class="fw-bold">اتصل بنا</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">اتصل بنا</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <div class="contact-info">
+                    <h2 class="mb-4">معلومات التواصل</h2>
+                    <p>نحن هنا للإجابة على جميع استفساراتك وتقديم المساعدة اللازمة. لا تتردد في التواصل معنا بإحدى الطرق التالية.</p>
+                    
+                    <div class="contact-details mt-4">
+                        <div class="d-flex mb-4">
+                            <div class="flex-shrink-0">
+                                <div class="contact-icon bg-primary text-white rounded-circle">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5>العنوان</h5>
+                                <p class="mb-0">شارع الجامعة، المنصورة، مصر</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-4">
+                            <div class="flex-shrink-0">
+                                <div class="contact-icon bg-primary text-white rounded-circle">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5>الهاتف</h5>
+                                <p class="mb-0">01234567890</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-4">
+                            <div class="flex-shrink-0">
+                                <div class="contact-icon bg-primary text-white rounded-circle">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5>البريد الإلكتروني</h5>
+                                <p class="mb-0">info@tshirtshop.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-4">
+                            <div class="flex-shrink-0">
+                                <div class="contact-icon bg-primary text-white rounded-circle">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5>ساعات العمل</h5>
+                                <p class="mb-0">من الأحد إلى الخميس: 9 صباحاً - 6 مساءً<br>الجمعة والسبت: 10 صباحاً - 4 مساءً</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="social-media mt-4">
+                        <h5>تواصل معنا على وسائل التواصل الاجتماعي</h5>
+                        <div class="social-icons mt-3">
+                            <a href="#" class="btn btn-outline-dark me-2"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="btn btn-outline-dark me-2"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="btn btn-outline-dark me-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="btn btn-outline-dark"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-7">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h2 class="card-title mb-4">أرسل لنا رسالة</h2>
+                        <form method="POST" action="{{ url_for('contact') }}">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">الاسم الكامل *</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">البريد الإلكتروني *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">رقم الهاتف</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="subject" class="form-label">الموضوع</label>
+                                    <select class="form-select" id="subject" name="subject">
+                                        <option value="general">استفسار عام</option>
+                                        <option value="order">استفسار عن طلب</option>
+                                        <option value="product">استفسار عن منتج</option>
+                                        <option value="complaint">شكوى</option>
+                                        <option value="suggestion">اقتراح</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="message" class="form-label">الرسالة *</label>
+                                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">إرسال الرسالة</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map Section -->
+        <div class="map-section mt-5">
+            <h2 class="text-center mb-4">موقعنا</h2>
+            <div class="ratio ratio-21x9">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13760.041172562474!2d31.357830956408357!3d31.047295538275883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14f79db7a9053547%3A0xf8dab3bbed766c97!2z2KzYp9mF2LnYqSDYp9mE2YXZhtis2YjYsdip!5e0!3m2!1sar!2seg!4v1642456843728!5m2!1sar!2seg" 
+                        allowfullscreen="" loading="lazy" class="border rounded"></iframe>
+            </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section mt-5">
+            <h2 class="text-center mb-4">الأسئلة الشائعة</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion" id="contactFAQ">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    ما هي خيارات الدفع المتاحة؟
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#contactFAQ">
+                                <div class="accordion-body">
+                                    نوفر طريقتين للدفع: الدفع عند الاستلام، وفودافون كاش. يمكنك اختيار الطريقة المناسبة لك عند إتمام الطلب.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    كم تستغرق عملية الشحن؟
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#contactFAQ">
+                                <div class="accordion-body">
+                                    تستغرق عملية الشحن عادةً من 2-7 أيام عمل حسب المحافظة. القاهرة والجيزة من 2-3 أيام، المدن الكبرى من 3-5 أيام، وباقي المحافظات من 4-7 أيام.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    هل يمكنني تتبع طلبي؟
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#contactFAQ">
+                                <div class="accordion-body">
+                                    نعم، يمكنك تتبع طلبك من خلال رقم الطلب الذي سيتم إرساله إليك بعد إتمام عملية الشراء. يمكنك أيضاً متابعة طلباتك من خلال حسابك الشخصي على الموقع.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    ما هي سياسة الاستبدال والاسترجاع؟
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#contactFAQ">
+                                <div class="accordion-body">
+                                    يمكن استبدال المنتج خلال 7 أيام من استلامه في حالة وجود عيوب في التصنيع أو عدم مطابقة المواصفات. لا يمكن استرجاع المنتجات المخصصة (التي تحمل تصاميم خاصة بالعميل).
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    كيف يمكنني تحميل تصميمي الخاص؟
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#contactFAQ">
+                                <div class="accordion-body">
+                                    يمكنك تحميل تصميمك الخاص عند اختيار المنتج، من خلال اختيار خيار "تحميل تصميم" وتحميل الملف من جهازك. الصيغ المقبولة هي PNG, JPG, GIF, SVG بحجم أقصى 5 ميجابايت.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+</style>
+{% endblock %}

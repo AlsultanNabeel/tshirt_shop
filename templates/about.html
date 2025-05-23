@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block title %}عن المتجر - متجر البلايز المميزة{% endblock %}
+
+{% block content %}
+<section class="about-page py-5">
+    <div class="container">
+        <div class="section-heading mb-4">
+            <h1 class="fw-bold">عن المتجر</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">عن المتجر</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="{{ url_for('static', filename='images/about-us.jpg') }}" alt="About Us" class="img-fluid rounded">
+            </div>
+            <div class="col-lg-6">
+                <h2>قصتنا</h2>
+                <p>بدأنا رحلتنا في عام 2018 كمشروع صغير بفكرة بسيطة: توفير بلايز بتصاميم مبتكرة وعصرية تعكس شخصية كل فرد وتميزه عن الآخرين.</p>
+                <p>من خلال التركيز على الجودة والتصاميم الفريدة، نمت شركتنا لتصبح واحدة من أكبر المتاجر المتخصصة في بيع البلايز المخصصة في مصر.</p>
+                <p>نؤمن بأن الملابس هي وسيلة للتعبير عن الذات، ونسعى دائمًا لتوفير منتجات تجمع بين الجودة العالية والتصاميم المميزة بأسعار مناسبة للجميع.</p>
+            </div>
+        </div>
+        
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="mb-4">لماذا تختارنا؟</h2>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-tshirt fa-3x text-primary mb-3"></i>
+                        <h4>جودة عالية</h4>
+                        <p>نستخدم أفضل أنواع الأقمشة القطنية 100% لضمان الراحة والمتانة لفترة طويلة.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-palette fa-3x text-primary mb-3"></i>
+                        <h4>تصاميم فريدة</h4>
+                        <p>نقدم مجموعة متنوعة من التصاميم المميزة، أو يمكنك إنشاء تصميمك الخاص بكل سهولة.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-hand-holding-usd fa-3x text-primary mb-3"></i>
+                        <h4>أسعار منافسة</h4>
+                        <p>نقدم منتجات ذات جودة عالية بأسعار منافسة، مع خيارات متعددة تناسب جميع الميزانيات.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="mb-4">عملية الإنتاج</h2>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="process-card text-center">
+                    <div class="process-icon bg-primary text-white rounded-circle mb-3">
+                        <span class="h4">1</span>
+                    </div>
+                    <h5>اختيار المنتج</h5>
+                    <p>اختر النوع والمقاس واللون المناسب لك من بين مجموعتنا المتنوعة</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="process-card text-center">
+                    <div class="process-icon bg-primary text-white rounded-circle mb-3">
+                        <span class="h4">2</span>
+                    </div>
+                    <h5>اختيار التصميم</h5>
+                    <p>اختر من بين تصاميمنا المميزة أو قم بتحميل تصميمك الخاص</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="process-card text-center">
+                    <div class="process-icon bg-primary text-white rounded-circle mb-3">
+                        <span class="h4">3</span>
+                    </div>
+                    <h5>الطباعة</h5>
+                    <p>نستخدم أحدث تقنيات الطباعة عالية الجودة لضمان نتائج مميزة</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="process-card text-center">
+                    <div class="process-icon bg-primary text-white rounded-circle mb-3">
+                        <span class="h4">4</span>
+                    </div>
+                    <h5>الشحن والتوصيل</h5>
+                    <p>نقوم بتغليف المنتج بعناية وشحنه إلى باب منزلك</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="row g-0">
+                            <div class="col-md-6">
+                                <img src="{{ url_for('static', filename='images/our-mission.jpg') }}" class="img-fluid" alt="Our Mission">
+                            </div>
+                            <div class="col-md-6 bg-light">
+                                <div class="p-4 p-md-5">
+                                    <h2 class="mb-4">رسالتنا</h2>
+                                    <p>نسعى لأن نكون الاختيار الأول في مجال البلايز المخصصة من خلال:</p>
+                                    <ul>
+                                        <li>توفير منتجات عالية الجودة بأسعار منافسة</li>
+                                        <li>تقديم تصاميم مبتكرة تواكب أحدث صيحات الموضة</li>
+                                        <li>تمكين العملاء من التعبير عن أنفسهم من خلال تصاميم فريدة</li>
+                                        <li>تقديم تجربة تسوق سلسة وممتعة</li>
+                                        <li>الالتزام بممارسات إنتاج مستدامة وصديقة للبيئة</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="mb-4">فريقنا</h2>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/team-1.jpg') }}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">أحمد محمد</h5>
+                        <p class="text-muted">المؤسس والمدير التنفيذي</p>
+                        <p class="card-text">خبرة أكثر من 10 سنوات في مجال الأزياء والتصميم</p>
+                        <div class="social-icons">
+                            <a href="#" class="text-dark me-2"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-dark me-2"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-dark"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/team-2.jpg') }}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">سارة أحمد</h5>
+                        <p class="text-muted">مديرة التصميم</p>
+                        <p class="card-text">مصممة أزياء متخصصة في تصميم الجرافيك والبلايز المخصصة</p>
+                        <div class="social-icons">
+                            <a href="#" class="text-dark me-2"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-dark me-2"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-dark"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/team-3.jpg') }}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">محمد علي</h5>
+                        <p class="text-muted">مدير العمليات</p>
+                        <p class="card-text">متخصص في إدارة العمليات وسلاسل التوريد وتجربة العملاء</p>
+                        <div class="social-icons">
+                            <a href="#" class="text-dark me-2"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-dark me-2"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-dark"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

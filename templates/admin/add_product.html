@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% block title %}إضافة منتج جديد - متجر البلايز المميزة{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-sidebar {
+        min-height: calc(100vh - 300px);
+    }
+    
+    .admin-sidebar .nav-link {
+        color: #333;
+        border-radius: 0;
+        padding: 0.75rem 1rem;
+    }
+    
+    .admin-sidebar .nav-link:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+    }
+    
+    .admin-sidebar .nav-link.active {
+        background-color: #0d6efd;
+        color: white;
+    }
+    
+    .image-preview {
+        width: 100%;
+        height: 200px;
+        border: 1px dashed #ccc;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        overflow: hidden;
+    }
+    
+    .image-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="admin-add-product py-5">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Admin Sidebar -->
+            <div class="col-lg-3 col-xl-2">
+                <div class="card admin-sidebar">
+                    <div class="card-body p-0">
+                        <div class="p-3 bg-primary text-white">
+                            <h5 class="mb-0">لوحة التحكم</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="{{ url_for('admin_dashboard') }}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-tachometer-alt me-2"></i> الرئيسية
+                            </a>
+                            <a href="{{ url_for('admin_products') }}" class="list-group-item list-group-item-action active">
+                                <i class="fas fa-tshirt me-2"></i> المنتجات
+                            </a>
+                            <a href="{{ url_for('admin_designs') }}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-palette me-2"></i> التصاميم
+                            </a>
+                            <a href="{{ url_for('admin_orders') }}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-shopping-basket me-2"></i> الطلبات
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-users me-2"></i> المستخدمين
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-cog me-2"></i> الإعدادات
+                            </a>
+                            <a href="{{ url_for('index') }}" class="list-group-item list-group-item-action text-danger">
+                                <i class="fas fa-sign-out-alt me-2"></i> العودة للمتجر
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9 col-xl-10">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="h4 mb-0">إضافة منتج جديد</h2>
+                            <a href="{{ url_for('admin_products') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-right me-1"></i> العودة للمنتجات
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add Product Form -->
+                <form action="{{ url_for('admin_add_product') }}" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card mb-4">
+                                <div class="card-header bg-white">
+                                    <h5 class="mb-0">بيانات المنتج</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">اسم المنتج *</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">وصف المنتج *</label>
+                                        <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="price" class="form-label">السعر (جنيه) *</label>
+                                                <input type="number" step="0.01" min="0" class="form-control" id="price" name="price" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="material" class="form-label">الخامة</label>
+                                        <input type="text" class="form-control" id="material" name="material">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-4">
+                                <div class="card-header bg-white">
+                                    <h5 class="mb-0">خيارات المنتج</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">المقاسات المتاحة *</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="sizes" id="size-s" value="S" checked>
+                                                <label class="form-check-label" for="size-s">S (صغير)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="sizes" id="size-m" value="M" checked>
+                                                <label class="form-check-label" for="size-m">M (متوسط)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="sizes" id="size-l" value="L" checked>
+                                                <label class="form-check-label" for="size-l">L (كبير)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="sizes" id="size-xl" value="XL" checked>
+                                                <label class="form-check-label" for="size-xl">XL (كبير جداً)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">الألوان المتاحة *</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="colors" id="color-black" value="black" checked>
+                                                <label class="form-check-label" for="color-black">أسود</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="colors" id="color-white" value="white" checked>
+                                                <label class="form-check-label" for="color-white">أبيض</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="colors" id="color-red" value="red">
+                                                <label class="form-check-label" for="color-red">أحمر</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="colors" id="color-blue" value="blue">
+                                                <label class="form-check-label" for="color-blue">أزرق</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header bg-white">
+                                    <h5 class="mb-0">صورة المنتج</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <div class="image-preview mb-3" id="imagePreview">
+                                            <div class="text-center text-muted">
+                                                <i class="fas fa-image fa-3x mb-2"></i>
+                                                <p>معاينة الصورة</p>
+                                            </div>
+                                        </div>
+                                        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                                        <div class="form-text">يفضل صورة بأبعاد 800×800 بيكسل.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-4">
+                                <div class="card-header bg-white">
+                                    <h5 class="mb-0">الحالة والنشر</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="in_stock" name="in_stock" checked>
+                                        <label class="form-check-label" for="in_stock">متوفر في المخزون</label>
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="featured" name="featured">
+                                        <label class="form-check-label" for="featured">منتج مميز (يظهر في الصفحة الرئيسية)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-body">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-save me-1"></i> حفظ المنتج
+                                    </button>
+                                    <button type="reset" class="btn btn-outline-secondary w-100 mt-2">
+                                        <i class="fas fa-times me-1"></i> إعادة تعيين
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageInput = document.getElementById('image');
+        const imagePreview = document.getElementById('imagePreview');
+        
+        imageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.innerHTML = `<img src="${e.target.result}" alt="Product Preview">`;
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+</script>
+{% endblock %}

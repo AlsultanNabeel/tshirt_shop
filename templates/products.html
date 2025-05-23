@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - متجر البلايز المميزة{% endblock %}
+
+{% block content %}
+<section class="products-page py-5">
+    <div class="container">
+        <div class="section-heading mb-4">
+            <h1 class="fw-bold">{{ title }}</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <div class="row">
+         
+            
+            <!-- Products Grid -->
+            <div class="col-lg-9">
+                {% if products %}
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-md-4 mb-4">
+                        <div class="product-card card h-100">
+                            <img src="{{ url_for('static', filename=product.image_path or 'images/placeholder.jpg') }}" 
+                                 class="card-img-top" alt="{{ product.name }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text text-truncate">{{ product.description }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="price fw-bold">{{ product.price }} جنيه</span>
+                                    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-sm btn-outline-primary">عرض التفاصيل</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <h4 class="alert-heading text-center">لا توجد منتجات في هذه الفئة حالياً</h4>
+                    <p class="text-center">يرجى المحاولة مرة أخرى لاحقاً أو تصفح الفئات الأخرى</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}الدفع وإتمام الطلب - متجر البلايز المميزة{% endblock %}
+
+{% block content %}
+<section class="checkout-page py-5">
+    <div class="container">
+        <div class="section-heading mb-4">
+            <h1 class="fw-bold">إتمام الطلب</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('cart') }}">سلة التسوق</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">إتمام الطلب</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <form method="POST" action="{{ url_for('checkout') }}">
+            <div class="row">
+                <!-- Shipping Info Form -->
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0">معلومات الشحن</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">الاسم الكامل <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name" required
+                                       value="{{ session.get('user_name', '') }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">رقم الهاتف <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required
+                                       placeholder="01XXXXXXXXX">
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">العنوان بالتفصيل <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="address" name="address" rows="3" required
+                                          placeholder="المحافظة، المدينة، الشارع، رقم المبنى، الدور"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0">طرق الدفع</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="payment-methods">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="payment_method" 
+                                           id="payment-cod" value="cash_on_delivery" checked>
+                                    <label class="form-check-label d-flex align-items-center" for="payment-cod">
+                                        <img src="{{ url_for('static', filename='images/cod-icon.svg') }}" 
+                                             alt="COD" width="40" class="me-2">
+                                        <div>
+                                            <span class="fw-bold">الدفع عند الاستلام</span>
+                                            <p class="text-muted mb-0 small">ادفع نقداً عند استلام الطلب</p>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment_method" 
+                                           id="payment-vodafone" value="vodafone_cash">
+                                    <label class="form-check-label d-flex align-items-center" for="payment-vodafone">
+                                        <img src="{{ url_for('static', filename='images/vodafone-icon.svg') }}" 
+                                             alt="Vodafone Cash" width="40" class="me-2">
+                                        <div>
+                                            <span class="fw-bold">فودافون كاش</span>
+                                            <p class="text-muted mb-0 small">الدفع باستخدام محفظة فودافون كاش (سنتواصل معك لإتمام الدفع)</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0">ملخص الطلب</h5>
+                        </div>
+                        <div class="card-body">
+                            {% for item in cart_items %}
+                            <div class="d-flex mb-3">
+                                <img src="{{ url_for('static', filename=item.product.image_path or 'images/placeholder.jpg') }}" 
+                                     alt="{{ item.product.name }}" width="60" class="me-2">
+                                <div>
+                                    <h6 class="mb-0">{{ item.product.name }}</h6>
+                                    <small class="text-muted">
+                                        {{ item.quantity }} x {{ item.product.price }} جنيه
+                                    </small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                            <hr>
+                            
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>إجمالي المنتجات:</span>
+                                <span>{{ total }} جنيه</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>الشحن:</span>
+                                <span>مجاني</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-3 fw-bold">
+                                <span>الإجمالي:</span>
+                                <span>{{ total }} جنيه</span>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-lock me-1"></i> تأكيد الطلب
+                            </button>
+                            <a href="{{ url_for('cart') }}" class="btn btn-outline-dark w-100 mt-2">
+                                العودة إلى سلة التسوق
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - متجر البلايز المميزة{% endblock %}
+
+{% block styles %}
+<style>
+    .product-main-image {
+        height: 400px;
+        object-fit: cover;
+    }
+    
+    .design-thumbnail {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s;
+    }
+    
+    .design-thumbnail.active {
+        border-color: #0d6efd;
+    }
+    
+    .design-thumbnail:hover {
+        transform: scale(1.05);
+    }
+    
+    .color-circle {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 10px;
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
+    
+    .color-circle.active {
+        border-color: #000;
+    }
+    
+    .size-btn {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+    }
+    
+    #custom-design-preview {
+        max-width: 100%;
+        max-height: 150px;
+        margin-top: 10px;
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('index') }}">الرئيسية</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('products') }}">المنتجات</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row mt-4">
+        <!-- صورة المنتج -->
+        <div class="col-md-6">
+            {% if product.image_path %}
+                <img src="{{ url_for('static', filename=product.image_path) }}" class="img-fluid product-main-image rounded" alt="{{ product.name }}">
+            {% else %}
+                <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" class="img-fluid product-main-image rounded" alt="{{ product.name }}">
+            {% endif %}
+        </div>
+        
+        <!-- تفاصيل المنتج -->
+        <div class="col-md-6">
+            <h2 class="mb-3">{{ product.name }}</h2>
+            <p class="text-muted">{{ product.material or 'قطن عالي الجودة' }}</p>
+            <p class="fs-4 text-primary fw-bold mb-4">{{ product.price }} جنيه</p>
+            
+            <form action="{{ url_for('add_to_cart') }}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                
+                <!-- اختيار المقاس -->
+                <div class="mb-4">
+                    <h5>اختر المقاس:</h5>
+                    <div>
+                        {% for size in sizes %}
+                            <input type="radio" class="btn-check" name="size" id="size-{{ size }}" value="{{ size }}" {% if loop.first %}checked{% endif %} required>
+                            <label class="btn btn-outline-secondary size-btn" for="size-{{ size }}">{{ size }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+               <!-- اختيار اللون -->
+<div class="mb-4">
+    <h5>اختر اللون:</h5>
+    <div>
+        {% for color in colors %}
+            {% if color == 'أبيض' %}
+                <input type="radio" class="color-input d-none" name="color" id="color-{{ color }}" 
+                       value="{{ color }}" {% if loop.first %}checked{% endif %} required>
+                <label for="color-{{ color }}" class="color-circle {% if loop.first %}active{% endif %}" 
+                       style="background-color: #ffffff" 
+                       title="{{ color }}" data-bs-toggle="tooltip"></label>
+            {% elif color == 'أسود' %}
+                <input type="radio" class="color-input d-none" name="color" id="color-{{ color }}" 
+                       value="{{ color }}" {% if loop.first %}checked{% endif %} required>
+                <label for="color-{{ color }}" class="color-circle {% if loop.first %}active{% endif %}" 
+                       style="background-color: #000000" 
+                       title="{{ color }}" data-bs-toggle="tooltip"></label>
+            {% elif color == 'أحمر' %}
+                <input type="radio" class="color-input d-none" name="color" id="color-{{ color }}" 
+                       value="{{ color }}" {% if loop.first %}checked{% endif %} required>
+                <label for="color-{{ color }}" class="color-circle {% if loop.first %}active{% endif %}" 
+                       style="background-color: #ff0000" 
+                       title="{{ color }}" data-bs-toggle="tooltip"></label>
+            {% elif color == 'أزرق' %}
+                <input type="radio" class="color-input d-none" name="color" id="color-{{ color }}" 
+                       value="{{ color }}" {% if loop.first %}checked{% endif %} required>
+                <label for="color-{{ color }}" class="color-circle {% if loop.first %}active{% endif %}" 
+                       style="background-color: #0000ff" 
+                       title="{{ color }}" data-bs-toggle="tooltip"></label>
+            {% elif color == 'أخضر' %}
+                <input type="radio" class="color-input d-none" name="color" id="color-{{ color }}" 
+                       value="{{ color }}" {% if loop.first %}checked{% endif %} required>
+                <label for="color-{{ color }}" class="color-circle {% if loop.first %}active{% endif %}" 
+                       style="background-color: #008000" 
+                       title="{{ color }}" data-bs-toggle="tooltip"></label>
+            {% else %}
+                <input type="radio" class="color-input d-none" name="color" id="color-{{ color }}" 
+                       value="{{ color }}" {% if loop.first %}checked{% endif %} required>
+                <label for="color-{{ color }}" class="color-circle {% if loop.first %}active{% endif %}" 
+                       style="background-color: #888888" 
+                       title="{{ color }}" data-bs-toggle="tooltip"></label>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+                
+                <!-- اختيار التصميم -->
+                <div class="mb-4">
+                    <h5>اختر التصميم:</h5>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="design_type" id="design-default" value="default" checked>
+                        <label class="form-check-label" for="design-default">
+                            اختر من التصاميم المتاحة
+                        </label>
+                    </div>
+                    
+                    <div class="mt-2 design-selection">
+                        <div class="row">
+                            {% for design in designs %}
+                                <div class="col-3 mb-3">
+                                    <input type="radio" name="design_id" id="design-{{ design.id }}" value="{{ design.id }}" class="d-none" {% if loop.first %}checked{% endif %}>
+                                    <img src="{{ url_for('static', filename=design.image_path) }}" 
+                                         class="img-thumbnail design-thumbnail {% if loop.first %}active{% endif %}" 
+                                         data-design-id="{{ design.id }}"
+                                         alt="{{ design.name }}"
+                                         title="{{ design.name }}">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="radio" name="design_type" id="design-custom" value="custom">
+                        <label class="form-check-label" for="design-custom">
+                            تحميل تصميم خاص بي
+                        </label>
+                    </div>
+                    
+                    <div class="mt-2 custom-design-upload" style="display: none;">
+                        <input type="file" class="form-control" name="custom_design" id="custom-design" accept="image/*">
+                        <small class="text-muted">الأنواع المسموحة: JPG, PNG, GIF - الحجم الأقصى: 5MB</small>
+                        <img id="custom-design-preview" class="mt-2" src="" alt="معاينة التصميم">
+                    </div>
+                </div>
+                
+                <!-- الكمية -->
+                <div class="mb-4">
+                    <label for="quantity" class="form-label fw-bold">الكمية:</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1" style="width: 100px;">
+                </div>
+                
+                <!-- زر إضافة إلى سلة التسوق -->
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-cart-plus me-2"></i> إضافة إلى سلة التسوق
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- وصف المنتج -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>تفاصيل المنتج</h4>
+                </div>
+                <div class="card-body">
+                    <p>{{ product.description or 'بلوزة ذات جودة عالية مصنوعة من قطن 100% عالي الجودة. مريحة وأنيقة ومناسبة لمختلف المناسبات.' }}</p>
+                    
+                    <h5 class="mt-4">المميزات:</h5>
+                    <ul>
+                        <li>قطن 100% عالي الجودة</li>
+                        <li>متوفرة بعدة ألوان ومقاسات</li>
+                        <li>أوفر سايز للراحة التامة</li>
+                        <li>طباعة عالية الجودة بألوان ثابتة</li>
+                        <li>سهلة الغسيل والعناية</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // تفعيل دوائر الألوان
+    document.querySelectorAll('.color-circle').forEach(circle => {
+        circle.addEventListener('click', function() {
+            document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById(this.getAttribute('for')).checked = true;
+        });
+    });
+
+    // تفعيل التصميم المحدد
+    document.querySelectorAll('.design-thumbnail').forEach(thumbnail => {
+        thumbnail.addEventListener('click', function() {
+            // تحديد التصميم
+            document.getElementById('design-default').checked = true;
+            document.getElementById(`design-${this.dataset.designId}`).checked = true;
+            
+            // تحديث الحالة المرئية
+            document.querySelectorAll('.design-thumbnail').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    
+    // إظهار/إخفاء حقل تحميل التصميم المخصص
+    document.querySelectorAll('input[name="design_type"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const customUpload = document.querySelector('.custom-design-upload');
+            if (this.value === 'custom') {
+                customUpload.style.display = 'block';
+                // إلغاء تحديد جميع التصاميم الافتراضية
+                document.querySelectorAll('input[name="design_id"]').forEach(d => d.checked = false);
+                document.querySelectorAll('.design-thumbnail').forEach(t => t.classList.remove('active'));
+            } else {
+                customUpload.style.display = 'none';
+                // تحديد أول تصميم افتراضي
+                const firstDesign = document.querySelector('input[name="design_id"]');
+                if (firstDesign) {
+                    firstDesign.checked = true;
+                    document.querySelector(`.design-thumbnail[data-design-id="${firstDesign.value}"]`).classList.add('active');
+                }
+            }
+        });
+    });
+    
+    // معاينة التصميم المخصص عند التحميل
+    document.getElementById('custom-design').addEventListener('change', function() {
+        const preview = document.getElementById('custom-design-preview');
+        const file = this.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
