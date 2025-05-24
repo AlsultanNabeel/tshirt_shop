@@ -141,10 +141,33 @@
     </div>
 </div>
                 
-                <!-- اختيار التصميم -->
+                <!-- قسم التصميم المخصص -->
                 <div class="mb-4">
-                    <h5>اختر التصميم:</h5>
+                    <h5>تصميم التيشيرت الخاص بي</h5>
                     
+                    <!-- اختيار لون التيشيرت الأساسي -->
+                    <div class="mb-3">
+                        <label for="base_tshirt_color" class="form-label">اختر لون التيشيرت الأساسي:</label>
+                        <select class="form-select" id="base_tshirt_color" name="base_tshirt_color" required>
+                            <option value="white" selected>أبيض</option>
+                            <option value="black">أسود</option>
+                        </select>
+                    </div>
+                    
+                    <!-- رفع التصميم -->
+                    <div class="mb-3">
+                        <label for="custom-design" class="form-label">رفع تصميم خاص بي:</label>
+                        <input type="file" class="form-control" name="custom_design" id="custom-design" accept="image/*">
+                        <small class="text-muted">الأنواع المسموحة: JPG, PNG, GIF - الحجم الأقصى: 5MB</small>
+                        <canvas id="merged-canvas" style="display:none; max-width: 100%; max-height: 300px; border: 1px solid #ccc;"></canvas>
+                        <img id="custom-design-preview" class="mt-2" src="" alt="معاينة التصميم" style="display:none; max-width: 100%; max-height: 150px;">
+                        <input type="hidden" name="merged_image_data" id="merged_image_data">
+                    </div>
+                </div>
+
+                <!-- قسم التصميم الجاهز -->
+                <div class="mb-4">
+                    <h5>اختر تصميم من التصاميم المتاحة</h5>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="design_type" id="design-default" value="default" checked>
                         <label class="form-check-label" for="design-default">
@@ -165,19 +188,6 @@
                                 </div>
                             {% endfor %}
                         </div>
-                    </div>
-                    
-                    <div class="form-check mt-3">
-                        <input class="form-check-input" type="radio" name="design_type" id="design-custom" value="custom">
-                        <label class="form-check-label" for="design-custom">
-                            تحميل تصميم خاص بي
-                        </label>
-                    </div>
-                    
-                    <div class="mt-2 custom-design-upload" style="display: none;">
-                        <input type="file" class="form-control" name="custom_design" id="custom-design" accept="image/*">
-                        <small class="text-muted">الأنواع المسموحة: JPG, PNG, GIF - الحجم الأقصى: 5MB</small>
-                        <img id="custom-design-preview" class="mt-2" src="" alt="معاينة التصميم">
                     </div>
                 </div>
                 
@@ -268,17 +278,66 @@
     // معاينة التصميم المخصص عند التحميل
     document.getElementById('custom-design').addEventListener('change', function() {
         const preview = document.getElementById('custom-design-preview');
+        const canvas = document.getElementById('merged-canvas');
+        const mergedImageDataInput = document.getElementById('merged_image_data');
         const file = this.files[0];
+        const baseTshirtColor = document.getElementById('base_tshirt_color').value;
         
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 preview.src = e.target.result;
                 preview.style.display = 'block';
+                
+                // Load base t-shirt image
+                const baseImage = new Image();
+                baseImage.crossOrigin = "anonymous";
+                baseImage.onload = function() {
+                    // Set canvas size to base image size
+                    canvas.width = baseImage.width;
+                    canvas.height = baseImage.height;
+                    canvas.style.display = 'block';
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Draw base t-shirt image
+                    ctx.drawImage(baseImage, 0, 0);
+                    
+                    // Draw uploaded design image
+                    const designImage = new Image();
+                    designImage.crossOrigin = "anonymous";
+                    designImage.onload = function() {
+                        // Resize design image to max width 400px
+                        const maxWidth = 400;
+                        let scale = maxWidth / designImage.width;
+                        let designWidth = maxWidth;
+                        let designHeight = designImage.height * scale;
+                        
+                        // Position design image centered horizontally, 100px from top
+                        let x = (canvas.width - designWidth) / 2;
+                        let y = 100;
+                        
+                        ctx.drawImage(designImage, x, y, designWidth, designHeight);
+                        
+                        // Update hidden input with merged image data
+                        mergedImageDataInput.value = canvas.toDataURL('image/jpeg');
+                    };
+                    designImage.src = e.target.result;
+                };
+                
+                // Set base image source based on selected color
+                if (baseTshirtColor === 'white') {
+                    baseImage.src = "{{ url_for('static', filename='images/white_tshirt.jpg') }}";
+                } else {
+                    baseImage.src = "{{ url_for('static', filename='images/black_tshirt.jpg.jpg') }}";
+                }
             }
             reader.readAsDataURL(file);
         } else {
             preview.style.display = 'none';
+            canvas.style.display = 'none';
+            mergedImageDataInput.value = '';
         }
     });
 </script>

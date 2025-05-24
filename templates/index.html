@@ -4,23 +4,39 @@
 
 {% block content %}
 <!-- Hero Banner -->
-<section class="hero-banner">
+<section class="hero-banner py-5" style="background: linear-gradient(135deg, #ff6b6b 0%, #f06595 100%); color: white;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <h1 class="display-4 fw-bold">بلايز بتصاميم فريدة ومميزة</h1>
                 <p class="lead">اختر من بين مجموعة متنوعة من التصاميم أو قم بتحميل تصميمك الخاص. جودة عالية وأسعار منافسة.</p>
                 <div class="mt-4">
-                    <a href="{{ url_for('products') }}" class="btn btn-primary btn-lg me-2">تسوق الآن</a>
-                    <a href="{{ url_for('about') }}" class="btn btn-outline-dark btn-lg">تعرف علينا</a>
+                    <a href="{{ url_for('products') }}" class="btn btn-light btn-lg me-2">تسوق الآن</a>
+                    <a href="{{ url_for('design_yourself') }}" class="btn btn-outline-light btn-lg me-2">صمم بنفسك</a>
+                    <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg">تعرف علينا</a>
                 </div>
             </div>
             <div class="col-lg-6">
-                <img src="{{ url_for('static', filename='images/hero-image.jpg') }}" alt="Hero Image" class="img-fluid rounded">
+                <img src="{{ url_for('static', filename='images/hero-image.jpg') }}" alt="Hero Image" class="img-fluid rounded shadow-lg">
             </div>
         </div>
     </div>
 </section>
+
+<style>
+.btn-custom-design {
+    background: linear-gradient(45deg, #ff6b6b, #f06595);
+    color: white;
+    border: none;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.btn-custom-design:hover {
+    background: linear-gradient(45deg, #f06595, #ff6b6b);
+    color: white;
+}
+</style>
 
 <!-- Features Section -->
 <section class="features py-5 bg-light">

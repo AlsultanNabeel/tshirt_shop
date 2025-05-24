@@ -32,12 +32,6 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=True)
-    products = db.relationship('Product', backref='category', lazy=True)
-
 class Design(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -140,23 +134,15 @@ def get_or_create_cart():
 @app.route('/')
 def index():
     featured_products = Product.query.filter_by(featured=True).limit(8).all()
-    categories = Category.query.all()
-    return render_template('index.html', products=featured_products, categories=categories)
+    return render_template('index.html', products=featured_products)
 
 # صفحة المنتجات
 @app.route('/products')
 def products():
-    category_id = request.args.get('category', type=int)
-    if category_id:
-        products = Product.query.filter_by(category_id=category_id).all()
-        category = Category.query.get_or_404(category_id)
-        title = f"منتجات {category.name}"
-    else:
-        products = Product.query.all()
-        title = "جميع المنتجات"
+    products = Product.query.all()
+    title = "جميع المنتجات"
     
-    categories = Category.query.all()
-    return render_template('products.html', products=products, categories=categories, title=title)
+    return render_template('products.html', products=products, title=title)
 
 # صفحة تفاصيل المنتج
 @app.route('/product/<int:product_id>')
@@ -177,7 +163,29 @@ def add_to_cart():
     quantity = request.form.get('quantity', 1, type=int)
     
     custom_design_path = None
-    if 'custom_design' in request.files:
+    
+    # Handle merged image upload from client
+    merged_image_data = request.form.get('merged_image_data')
+    if merged_image_data:
+        import base64
+        import re
+        from io import BytesIO
+        from PIL import Image
+        
+        # Extract base64 data
+        imgstr = re.search(r'base64,(.*)', merged_image_data).group(1)
+        imgdata = base64.b64decode(imgstr)
+        
+        # Save image
+        unique_filename = f"{uuid.uuid4().hex}_merged.jpg"
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], 'custom', unique_filename)
+        image = Image.open(BytesIO(imgdata))
+        image.save(save_path, 'JPEG')
+        
+        custom_design_path = f"uploads/custom/{unique_filename}"
+    
+    # Handle normal custom design upload without merging
+    elif 'custom_design' in request.files:
         file = request.files['custom_design']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -677,18 +685,14 @@ def setup():
         admin.is_admin = True
         db.session.add(admin)
     
-    
-    for category_name in categories:
-        category = Category.query.filter_by(name=category_name).first()
-        if not category:
-            category = Category()
-            category.name = category_name
-            db.session.add(category)
-    
     db.session.commit()
     
     flash('تم إعداد قاعدة البيانات بنجاح', 'success')
     return redirect(url_for('index'))
+
+@app.route('/design_yourself')
+def design_yourself():
+    return render_template('design_yourself.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
